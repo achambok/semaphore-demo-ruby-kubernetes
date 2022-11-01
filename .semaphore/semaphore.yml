@@ -1,31 +1,13 @@
 version: v1.0
-name: CI
+name: Initial Pipeline
 agent:
   machine:
     type: e1-standard-2
-    os_image: ubuntu1804
+    os_image: ubuntu2004
 blocks:
-  - name: Install dependencies
+  - name: 'Block #1'
     task:
       jobs:
-        - name: bundle install
+        - name: 'Job #1'
           commands:
             - checkout
-            - cache restore
-            - bundle config set deployment 'true'
-            - bundle install --path vendor/bundle
-            - cache store
-  - name: Tests
-    task:
-      jobs:
-        - name: rspec
-          commands:
-            - checkout
-            - cache restore
-            - bundle install --path vendor/bundle
-            - bundle exec rspec
-promotions:
-  - name: Dockerize
-    pipeline_file: docker-build.yml
-    auto_promote_on:
-      - result: passed
